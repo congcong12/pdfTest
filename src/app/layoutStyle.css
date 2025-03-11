@@ -1,0 +1,9 @@
+.flexBox {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+main {
+  padding: 20px 0;
+  background-color: #f7f5ee;
+}

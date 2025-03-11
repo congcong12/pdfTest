@@ -1,0 +1,111 @@
+.setPdf-title {
+  text-align: center;
+  padding-top: 50px;
+  font-size: 20px;
+}
+.pdf-contain {
+  display: flex;
+  justify-content: center;
+}
+.pdf-contain .pdf-upload {
+  width: 273px;
+  height: 348px;
+  border: 1px dashed #e5e7eb;
+  background-color: #fff;
+  margin: 0 auto;
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+.pdf-contain .pdf-upload:hover {
+  cursor: pointer;
+}
+.pdf-contain .pdf-upload .pdf-upload-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.pdf-contain .pdf-upload .pdf-upload-box input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 273px;
+  height: 348px;
+  opacity: 0;
+  cursor: pointer;
+}
+.pdf-action {
+  width: 300px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.pdf-yulan-box {
+  display: flex;
+  justify-content: center;
+  padding-top: 20px;
+}
+.pdf-yulan-box .pdf-contant {
+  float: left;
+  display: flex;
+  height: auto;
+  margin-left: 20px;
+  padding: 20px;
+  background-color: #fff;
+  overflow: hidden;
+  position: relative;
+  transform-origin: left top;
+}
+.pdf-yulan-box .pdf-contant .pdf-rotate-btn {
+  position: absolute;
+  top: 3px;
+  right: 10px;
+  font-size: 16px;
+}
+.pdf-yulan-box .pdf-contant .page-wrapper {
+  display: flex;
+  justify-content: center;
+  transition: transform 0.3s ease;
+  transform-origin: center center;
+}
+.pdf-yulan-box .pdf-contant .pdf-page {
+  /* scale: 80%; */
+  height: auto;
+  overflow: hidden !important;
+}
+.pdf-yulan-box .pdf-contant .pdf-page canvas {
+  height: auto !important;
+}
+.pdf-download {
+  display: block;
+  margin: 0 auto;
+  margin-top: 30px;
+}
+/* 避免 react-pdf 默认样式干扰 */
+.react-pdf__Document,
+.react-pdf__Page {
+  height: auto !important;
+  overflow: hidden !important;
+}
+.icon-hoverable {
+  font-size: 24px;
+  /* 设置图标大小 */
+  transition: transform 0.3s ease, color 0.3s ease;
+  /* 添加过渡效果 */
+  cursor: pointer;
+  /* 鼠标悬停时显示指针 */
+}
+.icon-hoverable:hover {
+  transform: scale(1.2);
+  /* 放大图标 */
+  color: #1890ff;
+  /* 改变图标颜色，可以根据需要调整 */
+}
+.disabled-icon {
+  pointer-events: none;
+  font-size: 24px;
+  opacity: 0.5;
+  /* 让图标看起来是禁用的 */
+}

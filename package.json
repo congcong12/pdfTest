@@ -1,0 +1,31 @@
+{
+  "name": "my-next-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^5.6.1",
+    "antd": "4.24.12",
+    "file-saver": "^2.0.5",
+    "next": "15.2.1",
+    "pdf-lib": "^1.17.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-pdf": "^8.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "file-loader": "^6.2.0",
+    "less": "^4.2.2",
+    "less-loader": "^12.2.0",
+    "typescript": "^5",
+    "worker-loader": "^3.0.8"
+  }
+}
