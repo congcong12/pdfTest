@@ -5,6 +5,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 import { Document, Page } from "react-pdf";
 import { Button, Tooltip } from "antd";
+
 import {
   PlusCircleOutlined,
   MinusCircleOutlined,
@@ -23,7 +24,7 @@ export default function Home() {
   const [file, setFile] = useState<null | File>(null);
   const [numPages, setNumPages] = useState<number>(0); // 总页数
   const [pdfRotation, setPdfRotation] = useState<null | {
-    [key: string]: number;
+    [key: number]: number;
   }>(null);
   const [pdfWidth, setPdfWidth] = useState<number>(550);
 
@@ -48,20 +49,29 @@ export default function Home() {
   };
 
   const rotateAllPdf = () => {
-    if (!pdfRotation) {
-      const initObj: { [key: number]: number } = {};
-      for (let i = 0; i < numPages; i++) {
-        initObj[i + 1] = 90;
-      }
-      setPdfRotation(initObj);
-    } else {
-      const copyObj = deepClone(pdfRotation);
+    const initRotation = () =>
+      Object.fromEntries([...Array(numPages)].map((_, i) => [i + 1, 90]));
 
-      for (let key in copyObj) {
-        copyObj[key] = copyObj[key] + 90;
-      }
-      setPdfRotation(copyObj);
+    if (!pdfRotation) {
+      setPdfRotation(initRotation());
+      return;
     }
+
+    const copyObj = deepClone(pdfRotation);
+
+    const isAllRotated = Object.keys(copyObj).length === numPages;
+    const updatedRotation = isAllRotated
+      ? Object.fromEntries(
+          Object.entries(copyObj).map(([key, value]) => [key, value + 90])
+        )
+      : {
+          ...initRotation(),
+          ...Object.fromEntries(
+            Object.entries(copyObj).map(([key, value]) => [key, value + 90])
+          ),
+        };
+
+    setPdfRotation(updatedRotation);
   };
 
   const removeAllPdf = () => {
@@ -179,6 +189,7 @@ export default function Home() {
                   className="pdf-rotate-btn"
                   onClick={() => handlePdfIndex(index + 1)}
                 />
+                <h1 className="pdf-page-number">{index + 1}</h1>
                 <div
                   className="page-wrapper"
                   style={{

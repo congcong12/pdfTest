@@ -64,6 +64,13 @@
   right: 10px;
   font-size: 16px;
 }
+.pdf-yulan-box .pdf-contant .pdf-page-number {
+  position: absolute;
+  bottom: 0px;
+  left: 50%;
+  transform: translateX(50%);
+  z-index: 999;
+}
 .pdf-yulan-box .pdf-contant .page-wrapper {
   display: flex;
   justify-content: center;
