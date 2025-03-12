@@ -1,13 +1,18 @@
-.setPdf-title {
+.box {
+  margin: 0 auto;
+  max-width: 1280px;
+  /* 避免 react-pdf 默认样式干扰 */
+}
+.box .setPdf-title {
   text-align: center;
   padding-top: 50px;
   font-size: 20px;
 }
-.pdf-contain {
+.box .pdf-contain {
   display: flex;
   justify-content: center;
 }
-.pdf-contain .pdf-upload {
+.box .pdf-contain .pdf-upload {
   width: 273px;
   height: 348px;
   border: 1px dashed #e5e7eb;
@@ -19,15 +24,15 @@
   justify-content: center;
   position: relative;
 }
-.pdf-contain .pdf-upload:hover {
+.box .pdf-contain .pdf-upload:hover {
   cursor: pointer;
 }
-.pdf-contain .pdf-upload .pdf-upload-box {
+.box .pdf-contain .pdf-upload .pdf-upload-box {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.pdf-contain .pdf-upload .pdf-upload-box input {
+.box .pdf-contain .pdf-upload .pdf-upload-box input {
   position: absolute;
   top: 0;
   left: 0;
@@ -36,18 +41,26 @@
   opacity: 0;
   cursor: pointer;
 }
-.pdf-action {
+.box .pdf-action {
   width: 300px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.pdf-yulan-box {
+.box .loading-container {
   display: flex;
   justify-content: center;
-  padding-top: 20px;
+  align-items: center;
+  height: 100px;
+  width: 100%;
 }
-.pdf-yulan-box .pdf-contant {
+.box .pdf-yulan-box {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 20px;
+}
+.box .pdf-yulan-box .pdf-contant {
   float: left;
   display: flex;
   height: auto;
@@ -57,46 +70,48 @@
   overflow: hidden;
   position: relative;
   transform-origin: left top;
+  box-sizing: border-box;
+  margin-bottom: 20px;
 }
-.pdf-yulan-box .pdf-contant .pdf-rotate-btn {
+.box .pdf-yulan-box .pdf-contant .pdf-rotate-btn {
   position: absolute;
   top: 3px;
   right: 10px;
   font-size: 16px;
+  z-index: 999;
 }
-.pdf-yulan-box .pdf-contant .pdf-page-number {
+.box .pdf-yulan-box .pdf-contant .pdf-page-number {
   position: absolute;
   bottom: 0px;
   left: 50%;
   transform: translateX(50%);
   z-index: 999;
 }
-.pdf-yulan-box .pdf-contant .page-wrapper {
+.box .pdf-yulan-box .pdf-contant .page-wrapper {
   display: flex;
   justify-content: center;
   transition: transform 0.3s ease;
   transform-origin: center center;
+  width: 100%;
 }
-.pdf-yulan-box .pdf-contant .pdf-page {
+.box .pdf-yulan-box .pdf-contant .pdf-page {
   /* scale: 80%; */
-  height: auto;
   overflow: hidden !important;
 }
-.pdf-yulan-box .pdf-contant .pdf-page canvas {
-  height: auto !important;
+.box .pdf-yulan-box .pdf-contant .pdf-page canvas {
+  width: 100%;
 }
-.pdf-download {
+.box .pdf-download {
   display: block;
   margin: 0 auto;
   margin-top: 30px;
 }
-/* 避免 react-pdf 默认样式干扰 */
-.react-pdf__Document,
-.react-pdf__Page {
+.box .react-pdf__Document,
+.box .react-pdf__Page {
   height: auto !important;
   overflow: hidden !important;
 }
-.icon-hoverable {
+.box .icon-hoverable {
   font-size: 24px;
   /* 设置图标大小 */
   transition: transform 0.3s ease, color 0.3s ease;
@@ -104,15 +119,28 @@
   cursor: pointer;
   /* 鼠标悬停时显示指针 */
 }
-.icon-hoverable:hover {
+.box .icon-hoverable:hover {
   transform: scale(1.2);
   /* 放大图标 */
   color: #1890ff;
   /* 改变图标颜色，可以根据需要调整 */
 }
-.disabled-icon {
+.box .disabled-icon {
   pointer-events: none;
   font-size: 24px;
   opacity: 0.5;
   /* 让图标看起来是禁用的 */
+}
+.box .page-loadinga {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  /* 保持加载动画高度 */
+  min-height: 750px;
+  /* 避免空白 */
+  background-color: #f0f2f5;
+  border: 1px dashed #d9d9d9;
+  color: #595959;
+  z-index: 9999;
 }

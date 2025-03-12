@@ -2,9 +2,9 @@
 
 import "@/app/style.css";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Document, Page } from "react-pdf";
-import { Button, Tooltip } from "antd";
+import { Button, Tooltip, Spin } from "antd";
 
 import {
   PlusCircleOutlined,
@@ -26,7 +26,15 @@ export default function Home() {
   const [pdfRotation, setPdfRotation] = useState<null | {
     [key: number]: number;
   }>(null);
-  const [pdfWidth, setPdfWidth] = useState<number>(550);
+  const [pdfWidth, setPdfWidth] = useState<number>(450);
+
+  const [renderedPages, setRenderedPages] = useState(0);
+  const [isReady, setIsReady] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const handlePageRenderSuccess = () => {
+    setRenderedPages((prev) => prev + 1);
+  };
 
   const handleFileChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     const selectedFile = e.target.files?.[0];
@@ -76,9 +84,11 @@ export default function Home() {
 
   const removeAllPdf = () => {
     setFile(null);
-    setPdfWidth(550);
+    setPdfWidth(450);
     setNumPages(0);
     setPdfRotation(null);
+    setIsReady(false);
+    setRenderedPages(0);
   };
   const addAllScale = () => {
     setPdfWidth(pdfWidth + 50);
@@ -91,19 +101,18 @@ export default function Home() {
       alert("请先上传 PDF");
       return;
     }
-
     const existingPdfBytes = await file.arrayBuffer();
     const pdfDoc = await PDFDocument.load(existingPdfBytes);
-
     pdfDoc.getPages().forEach((page, index) => {
       const rotation = pdfRotation?.[index + 1] || 0;
       if (rotation !== 0) {
         page.setRotation(degrees(rotation));
       }
     });
-
     const pdfBytes = await pdfDoc.save();
-    saveAs(new Blob([pdfBytes], { type: "application/pdf" }), "rotated.pdf");
+    const originalFileName = file.name.replace(/\.pdf$/, "");
+    const newFileName = `${originalFileName} (KUNai).pdf`;
+    saveAs(new Blob([pdfBytes], { type: "application/pdf" }), newFileName);
   };
   const handlePdfIndex = (index: number) => {
     if (!pdfRotation) {
@@ -122,8 +131,20 @@ export default function Home() {
       }
     }
   };
+
+  useEffect(() => {
+    if (renderedPages === numPages && renderedPages !== 0) {
+      const canvasElements = containerRef.current?.querySelectorAll("canvas");
+      canvasElements?.forEach((canvas) => {
+        canvas.style.width = "";
+        canvas.style.height = "";
+      });
+      setIsReady(true);
+    }
+  }, [renderedPages, numPages]);
+
   return (
-    <div>
+    <div className="box">
       <div className="setPdf-title">
         <h1>Rotate PDF Pages</h1>
         <p>
@@ -154,7 +175,7 @@ export default function Home() {
               <PlusCircleOutlined
                 onClick={addAllScale}
                 className={
-                  pdfWidth === 600 ? "disabled-icon" : "icon-hoverable"
+                  pdfWidth === 500 ? "disabled-icon" : "icon-hoverable"
                 }
               />
             </Tooltip>
@@ -162,7 +183,7 @@ export default function Home() {
               <MinusCircleOutlined
                 onClick={delAllScale}
                 className={
-                  pdfWidth === 300 ? "disabled-icon" : "icon-hoverable"
+                  pdfWidth === 100 ? "disabled-icon" : "icon-hoverable"
                 }
               />
             </Tooltip>
@@ -171,7 +192,12 @@ export default function Home() {
       </div>
 
       {file && (
-        <>
+        <div ref={containerRef}>
+          {!isReady && (
+            <div className="loading-container">
+              <Spin size="large" tip="PDF 加载中..." />
+            </div>
+          )}
           <Document
             file={file} // 直接传递 File 对象
             onLoadSuccess={({ numPages }) => {
@@ -183,13 +209,17 @@ export default function Home() {
               <div
                 className="pdf-contant"
                 key={`pdf-page-${index}`}
-                style={{ width: pdfWidth + "px" }}
+                style={{
+                  display: isReady ? "block" : "none",
+                  flex: `0 0 ${pdfWidth}px`,
+                  maxWidth: `${pdfWidth}`,
+                }}
               >
                 <RedoOutlined
                   className="pdf-rotate-btn"
                   onClick={() => handlePdfIndex(index + 1)}
                 />
-                <h1 className="pdf-page-number">{index + 1}</h1>
+                <h4 className="pdf-page-number">{index + 1}</h4>
                 <div
                   className="page-wrapper"
                   style={{
@@ -208,7 +238,7 @@ export default function Home() {
                     renderAnnotationLayer={false}
                     pageNumber={index + 1}
                     className={`pdf-page`}
-                    width={pdfWidth - 50}
+                    onRenderSuccess={handlePageRenderSuccess}
                   />
                 </div>
               </div>
@@ -219,7 +249,7 @@ export default function Home() {
               Download
             </Button>
           </Tooltip>
-        </>
+        </div>
       )}
     </div>
   );
