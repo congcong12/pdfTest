@@ -13,6 +13,7 @@ const nextConfig: NextConfig = {
       test: /pdf\.worker\.js$/,
       use: "file-loader",
     });
+    config.externals.push({ canvas: "commonjs canvas" }); // 忽略 canvas 模块
     return config;
   },
 };
